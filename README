@@ -1,0 +1,100 @@
+MiniKakofonix
+
+(c) Copyright 2013 Filip Jonckers.
+This program is distributed under the terms of the GNU General Public License.
+
+This program was written in my own free time, available to anyone who wishes
+to use it within the limits of the license.
+Always nice to hear if you use it, any feedback much appreciated.
+
+My personal requirements:
+- subscribe to a multicast group address
+- listen for multicast UDP frames on a specific UDP port
+- write received UDP frames to a binary recording file
+- after a specific time period (block time) create a new recording file
+- time stamp a recording file with start and stop time
+
+Based on my original Kakofonix program written in C some years ago
+which used pcap library to capture multiple Asterix multicast radar feeds.
+
+
+Project Maintainer:
+- Filip Jonckers
+
+
+
+Build instructions
+------------------
+
+Build using the included ant build.xml file:
+
+$ ant
+
+This will build an executable jar file.
+
+
+
+What is ASTERIX?
+----------------
+
+ASTERIX stands for All Purpose STructured Eurocontrol SuRveillance Information EXchange.
+
+It is an ATM Surveillance Data Binary Messaging Format which allows transmission of
+harmonised information between any surveillance and automation system.
+ASTERIX defines the structure of the data to be exchanged over a communication medium,
+from the encoding of every bit of information up to the organisation of the data within
+a block of data - without any loss of information during the whole process.
+ASTERIX is a EUROCONTROL Standard which refers to the Presentation and Application
+layers (layers six and seven) as defined by the Open Systems Interconnection (OSI)
+Reference Model (International Standards Organization (ISO) Standard 7498).
+
+Transmission of ASTERIX coded surveillance information can make use of any available
+communication medium, for instance Wide Area Network (WAN), Local Area Network (LAN),
+Internet Protocols (IP), etc as those belong to lower layers. 
+
+Considering that there is information common to all systems (for instance position,
+Mode-A Code and Mode-C Code information), ASTERIX specifies minimum requirements
+at the Application level, so as to ease data exchange between heterogeneous applications.
+The communication between two different systems (even located in different countries)
+is thus made possible, based on a core of commonly used surveillance related data,
+transferred in the same way by the ASTERIX Presentation layer.
+For the transmission of information related to a specific application, data items
+are grouped in ASTERIX Categories. Up to 256 categories can be defined.
+The definition of these categories and their composition is managed
+by the ASTERIX Maintenance Group (AMG).
+
+
+
+Resources
+---------
+
+Eurocontrol Asterix Protocol:
+http://www.eurocontrol.int/services/asterix
+
+
+
+Copyright
+---------
+
+This file is part of MiniKakofonix.
+
+MiniKakofonix is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+MiniKakofonix is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+
+
+
+Copying
+-------
+
+Free use of this software is granted under the terms of the GNU General
+Public License (GPL). For details see the file `COPYING` included in this distribution.

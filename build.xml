@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="default" name="Create JAR for Project minikakofonix">
+    <target name="default">
+        <jar destfile="minikakofonix.jar">
+            <manifest>
+                <attribute name="Main-Class" value="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader"/>
+                <attribute name="Rsrc-Main-Class" value="be.belgocontrol.sur.minikakofonix.Minikakofonix"/>
+                <attribute name="Class-Path" value="."/>
+                <attribute name="Rsrc-Class-Path" value="./"/>
+            </manifest>
+            <zipfileset src="./build/jar-in-jar-loader.zip"/>
+            <fileset dir="./bin"/>
+        </jar>
+    </target>
+</project>
