@@ -3,12 +3,12 @@ MiniKakofonix
 (c) Copyright 2013 Filip Jonckers.
 This program is distributed under the terms of the GNU General Public License.
 
-This program was written in my own free time, available to anyone who wishes
+This program was written in my own free time at home and is available to anyone who wishes
 to use it within the limits of the license.
 Always nice to hear if you use it, any feedback much appreciated.
 
 My personal requirements:
-- subscribe to a multicast group address
+- subscribe to a single multicast group address
 - listen for multicast UDP frames on a specific UDP port
 - write received UDP frames to a binary recording file
 - after a specific time period (block time) create a new recording file
@@ -17,6 +17,9 @@ My personal requirements:
 Based on my original Kakofonix program written in C some years ago
 which used pcap library to capture multiple Asterix multicast radar feeds.
 
+MiniKakofonix is only capable of recording a single multicast UDP stream, for multi radar
+UDP feed recording Kakofonix is required which can listen to multiple UDP multicast feeds.
+(This requires a thread pool with a separate thread for each multicast feed)
 
 Project Maintainer:
 - Filip Jonckers
@@ -26,11 +29,8 @@ Project Maintainer:
 Build instructions
 ------------------
 
-Build using the included ant build.xml file:
-
-$ ant
-
-This will build an executable jar file.
+This program is compiled/build using Eclipse.  An ANT build file (build.xml) is included
+to create an executable jar file.
 
 
 
