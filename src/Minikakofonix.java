@@ -29,13 +29,13 @@ import java.util.TimeZone;
  * You should have received a copy of the GNU General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
  * 
  * @author Filip Jonckers
- * @version 1.01
+ * @version 1.02
  */
 
 public class Minikakofonix
 {
-    private final static String VERSION        = "1.01";
-    private final static String COPYRIGHT      = "(c)2013 Filip Jonckers (Belgocontrol E/E/SUR)";
+    private final static String VERSION        = "1.02";
+    private final static String COPYRIGHT      = "Copyright (c) 2013 Filip Jonckers. (GPL)";
     private final static int    MAXBUFFER      = 8192;
 
     private OutputStream        astfile_       = null;
@@ -68,6 +68,13 @@ public class Minikakofonix
         if (!parseArgs(args))
             return;
 
+        // minimum requirements
+        if(mcast_ == null || mcastport_ == 0)
+        {
+            System.err.println("Error: multicast group address and udp port number are required.");
+            System.exit(-1);
+        }
+        
         // shutdown hook - catches CTRL-C
         activateShutdownHook();
 
@@ -77,13 +84,22 @@ public class Minikakofonix
         {
             System.out.println("Joining multicast group: " + mcast_);
             socket = new MulticastSocket(mcastport_);
+            if(intf_ != null)
+            {
+                socket.setInterface(InetAddress.getByName(intf_));
+            }
             InetAddress group = InetAddress.getByName(mcast_);
             socket.joinGroup(group);
         }
-        catch (IOException e)
+        catch (SocketException e)
         {
             System.err.println("Error: Unable to join multicast group: " + mcast_);
             System.exit(-1);
+        }
+        catch(IOException e)
+        {
+            System.err.println("Error: Unable to join multicast group: " + mcast_);
+            System.exit(-1);            
         }
 
         // record timer
@@ -167,17 +183,20 @@ public class Minikakofonix
      */
     private final void CloseRecordingFile(final boolean createNewFile)
     {
-        try
+        if (astfile_ != null)
         {
-            astfile_.close();
+            try
+            {
+                astfile_.close();
+            }
+            catch (IOException e)
+            {
+                System.err.println("Error closing asterix file.");
+                System.exit(-1);
+            }
+            // rename recording file to timestamped file name.
+            renameRecordingFile();
         }
-        catch (IOException e)
-        {
-            System.err.println("Error closing asterix file.");
-            System.exit(-1);
-        }
-        // rename recording file to timestamped file name.
-        renameRecordingFile();
         // do we need to create a new recordingfile ?
         if (createNewFile)
             createRecordingFile();
@@ -213,12 +232,13 @@ public class Minikakofonix
      */
     private final void resetTimers()
     {
+        // get timestamp now
         final Date currentTime = new Date();
         // recording file contains timestamp - first part
         recStartLabel_ = sdfStart_.format(currentTime);
-        // start of this recording
+        // start of this recording in UTC after 1970/01/01
         recStartTime_ = currentTime.getTime();
-        // predict end time
+        // predict end time in UTC (60 min blocktime = new recording every hour on the hour)
         recEndTime_ = recStartTime_ - (recStartTime_ % blockmsec_) + blockmsec_;
     }
 
@@ -339,11 +359,11 @@ public class Minikakofonix
         if (verbose_)
         {
             System.out.println("Settings used:");
-            System.out.println("- interface        =" + intf_);
-            System.out.println("- file prefix      =" + astprefix_);
-            System.out.println("- block time (min) =" + blocktime_);
-            System.out.println("- multicast group  =" + mcast_);
-            System.out.println("- muticast port    =" + mcastport_);
+            System.out.println("- interface        = " + (intf_ == null ? "(default)" : intf_));
+            System.out.println("- file prefix      = " + astprefix_);
+            System.out.println("- block time (min) = " + blocktime_);
+            System.out.println("- multicast group  = " + mcast_);
+            System.out.println("- muticast port    = " + mcastport_);
         }
         return true;
     }
@@ -403,10 +423,10 @@ public class Minikakofonix
      */
     public final void usage()
     {
-        System.out.println(COPYRIGHT);
         System.out.println("Command line arguments:");
         System.out.println("-h          display command line arguments help");
         System.out.println("-v          be verbose (show info about received multicast frames");
+        System.out.println("-vv         be very verbose (also display first 20 octets");
         System.out.println("-i <int>    use network interface <int>");
         System.out.println("-w <file>   write asterix raw data to <file>.ast");
         System.out.println("-b <min>    create a new asterix file every <min> minutes");

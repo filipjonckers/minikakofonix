@@ -4,7 +4,7 @@
         <jar destfile="minikakofonix.jar">
             <manifest>
                 <attribute name="Main-Class" value="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader"/>
-                <attribute name="Rsrc-Main-Class" value="be.belgocontrol.sur.minikakofonix.Minikakofonix"/>
+                <attribute name="Rsrc-Main-Class" value="Minikakofonix"/>
                 <attribute name="Class-Path" value="."/>
                 <attribute name="Rsrc-Class-Path" value="./"/>
             </manifest>
