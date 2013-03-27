@@ -3,6 +3,12 @@ MiniKakofonix
 (c) Copyright 2013 Filip Jonckers.
 This program is distributed under the terms of the GNU General Public License.
 
+This program is capable of subscribing to an UDP multicast feed containing (live) radar data
+in Eurocontrol Asterix format.  The received UDP frames are stored in a recording file.
+A new (raw) Asterix recording file can be created every x minutes.  The previously recorded
+Asterix filename contains date and timestamp.
+This tool can be used to do continuous 24/7 Asterix multicast recordings.
+
 This program was written in my own free time at home and is available to anyone who wishes
 to use it within the limits of the license.
 Always nice to hear if you use it, any feedback much appreciated.
@@ -22,7 +28,10 @@ UDP feed recording Kakofonix is required which can listen to multiple UDP multic
 (This requires a thread pool with a separate thread for each multicast feed)
 
 Project Maintainer:
-- Filip Jonckers
+Filip Jonckers
+Radar Expert - Belgocontrol
+Twitter: @FilipJonckers
+Linkedin: http://be.linkedin.com/in/filipjonckers
 
 
 Tags
