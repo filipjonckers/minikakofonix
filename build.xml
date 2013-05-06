@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project default="default" name="Create JAR for Project minikakofonix">
+	<property name="app.name"  value="minikakofonix"/>
     <target name="default">
-        <jar destfile="minikakofonix.jar">
+        <jar destfile="${app.name}.jar">
             <manifest>
                 <attribute name="Main-Class" value="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader"/>
                 <attribute name="Rsrc-Main-Class" value="Minikakofonix"/>
@@ -11,5 +12,11 @@
             <zipfileset src="./build/jar-in-jar-loader.zip"/>
             <fileset dir="./bin"/>
         </jar>
+		<mkdir dir="dist"/>
+		<copy file="${app.name}.jar" tofile="dist/${app.name}.jar" overwrite="true"/>
+		<copy file="${app.name}.sh" tofile="dist/${app.name}.sh" overwrite="true"/>
+		<copy file="${app.name}.cmd" tofile="dist/${app.name}.cmd" overwrite="true"/>
+		<copy file="README" tofile="dist/README" overwrite="true"/>
+		<copy file="COPYING" tofile="dist/COPYING" overwrite="true"/>
     </target>
 </project>

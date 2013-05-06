@@ -22,6 +22,7 @@
 /build/
 /log/
 bin/**
+dist/**
 Desktop.ini
 local.properties
 target/
