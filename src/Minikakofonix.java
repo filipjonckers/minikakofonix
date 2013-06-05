@@ -5,9 +5,12 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.MulticastSocket;
 import java.net.NetworkInterface;
+import java.net.SocketAddress;
 import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Enumeration;
@@ -34,7 +37,7 @@ import java.util.TimeZone;
 
 public class Minikakofonix
 {
-    private final static String VERSION        = "1.02";
+    private final static String VERSION        = "1.03";
     private final static String COPYRIGHT      = "Copyright (c) 2013 Filip Jonckers. (GPL)";
     private final static int    MAXBUFFER      = 8192;
 
@@ -82,23 +85,43 @@ public class Minikakofonix
         MulticastSocket socket = null;
         try
         {
-            System.out.println("Joining multicast group: " + mcast_);
             socket = new MulticastSocket(mcastport_);
-            if(intf_ != null)
+            if(intf_ == null)
             {
-                socket.setInterface(InetAddress.getByName(intf_));
+                // no specific interface defined - use default routing
+                System.out.println("Joining multicast group: " + mcast_);
+                socket.joinGroup(InetAddress.getByName(mcast_));
             }
-            InetAddress group = InetAddress.getByName(mcast_);
-            socket.joinGroup(group);
+            else
+            {
+                // try to join group via specific network interface
+                System.out.println("Joining multicast group: " + mcast_ + " via interface: " + intf_);
+                SocketAddress group = new InetSocketAddress(mcast_, 40);
+                NetworkInterface netIf = getInterface(intf_);
+                if(netIf != null)
+                {
+                    socket.joinGroup(group, netIf);
+                }
+                else
+                {
+                    socket.joinGroup(InetAddress.getByName(mcast_));
+                }
+            }
+            System.out.println("Multicast group: " + mcast_ + " using interface:" + socket.getInterface().getHostAddress() + " Buffer size: " + socket.getReceiveBufferSize());
+        }
+        catch (UnknownHostException e)
+        {
+            System.err.println("Error: Unknown Host - interface not found: " + intf_);
+            System.exit(-1);            
         }
         catch (SocketException e)
         {
-            System.err.println("Error: Unable to join multicast group: " + mcast_);
+            System.err.println("Error: Socket Exception - Unable to join multicast group: " + mcast_);
             System.exit(-1);
         }
         catch(IOException e)
         {
-            System.err.println("Error: Unable to join multicast group: " + mcast_);
+            System.err.println("Error: IO Error - Unable to join multicast group: " + mcast_);
             System.exit(-1);            
         }
 
@@ -368,6 +391,27 @@ public class Minikakofonix
         return true;
     }
 
+    /**
+     * Get the NetworkInterface instance for the given interface name.
+     * 
+     * @param ifname String
+     * @return NetWorkInterface
+     */
+    private final NetworkInterface getInterface(final String ifname)
+    {
+        try
+        {
+            NetworkInterface netif = NetworkInterface.getByName(ifname);
+            return netif;
+        }
+        catch (SocketException e)
+        {
+            System.err.println("Error: Socket Exception - Interface " + ifname + "not found.");
+            System.exit(-1);
+        }
+        return null;
+    }
+    
     /**
      * Show available interfaces.
      */
