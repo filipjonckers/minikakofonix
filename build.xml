@@ -1,22 +1,73 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project default="default" name="Create JAR for Project minikakofonix">
-	<property name="app.name"  value="minikakofonix"/>
-    <target name="default">
-        <jar destfile="${app.name}.jar">
-            <manifest>
-                <attribute name="Main-Class" value="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader"/>
-                <attribute name="Rsrc-Main-Class" value="Minikakofonix"/>
-                <attribute name="Class-Path" value="."/>
-                <attribute name="Rsrc-Class-Path" value="./"/>
-            </manifest>
-            <zipfileset src="./build/jar-in-jar-loader.zip"/>
-            <fileset dir="./bin"/>
-        </jar>
-		<mkdir dir="dist"/>
-		<copy file="${app.name}.jar" tofile="dist/${app.name}.jar" overwrite="true"/>
-		<copy file="${app.name}.sh" tofile="dist/${app.name}.sh" overwrite="true"/>
-		<copy file="${app.name}.cmd" tofile="dist/${app.name}.cmd" overwrite="true"/>
-		<copy file="README" tofile="dist/README" overwrite="true"/>
-		<copy file="COPYING" tofile="dist/COPYING" overwrite="true"/>
-    </target>
+<project default="default" name="MiniKakofonix">
+	<property name="app.name"    value="minikakofonix"/>
+	<property name="app.version" value="v103"/>
+	<property name="dist.dir"    value="dist"/>
+	<property name="src.dir"     value="src"/>
+	<property name="build.dir"   value="build"/>
+	<property name="classes.dir" value="${build.dir}/classes"/>
+	<property name="jar.dir"     value="${build.dir}/jar"/>
+	<property name="main-class"  value="Minikakofonix"/>
+
+	<target name="clean">
+		<delete dir="${build.dir}"/>
+		<delete dir="${dist.dir}"/>
+	</target>
+
+	<target name="compile">
+		<mkdir dir="${classes.dir}"/>
+		<!-- build for Java 1.6 - asterix recording servers -->
+		<javac source="1.6" target="1.6" srcdir="${src.dir}" destdir="${classes.dir}"/>
+	</target>
+
+	<target name="jar">
+		<mkdir dir="${jar.dir}"/>
+		<tstamp>
+			<format property="build.timestamp" pattern="yyyy-MM-dd HH:mm:ss" />
+		</tstamp>
+		<jar destfile="${jar.dir}/${app.name}.jar" basedir="${classes.dir}">
+			<manifest>
+				<attribute name="Main-Class" value="${main-class}"/>
+				<attribute name="Implementation-Title" value="${project.name}"/>
+				<attribute name="Implementation-Version" value="${app.version}"/>
+				<attribute name="Implementation-Vendor" value="Filip Jonckers"/>
+				<attribute name="Signature-Title" value="${project.name}"/>
+				<attribute name="Signature-Version" value="${app.version}"/>
+				<attribute name="Signature-Vendor" value="Filip Jonckers"/>
+				<attribute name="Built-By" value="${user.name}"/>
+				<attribute name="Built-Date" value="${build.timestamp}"/>
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="run" depends="jar">
+		<java jar="${jar.dir}/${app.name}.jar" fork="true"/>
+	</target>
+
+	<target name="dist"    depends="clean,compile,jar">
+		<mkdir dir="${dist.dir}"/>
+		<zip destfile="${dist.dir}/${app.name}-${app.version}.zip">
+			<fileset dir="." includes="README"/>
+			<fileset dir="." includes="COPYING"/>
+			<fileset dir="." includes="AUTHORS"/>
+			<fileset dir="." includes="minikakofonix.sh"/>
+			<fileset dir="." includes="minikakofonix.cmd"/>
+			<fileset dir="${jar.dir}" includes="${app.name}.jar"/>
+		</zip>
+	</target>
+	
+	<target name="default" depends="dist"/>
+
+	<target name="previous">
+		<jar destfile="minikakofonix.jar">
+			<manifest>
+				<attribute name="Main-Class" value="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader"/>
+				<attribute name="Rsrc-Main-Class" value="Minikakofonix"/>
+				<attribute name="Class-Path" value="."/>
+				<attribute name="Rsrc-Class-Path" value="./"/>
+			</manifest>
+			<zipfileset src="./build/jar-in-jar-loader.zip"/>
+			<fileset dir="./bin"/>
+		</jar>
+	</target>
 </project>

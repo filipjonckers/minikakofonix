@@ -20,9 +20,9 @@
 .settings/
 /bin/
 /build/
+/dist/
 /log/
 bin/**
-dist/**
 Desktop.ini
 local.properties
 target/
