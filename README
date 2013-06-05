@@ -42,8 +42,33 @@ Asterix, Eurocontrol, radar, modeS, SASS-C, multicast, multilateration, surveill
 Build instructions
 ------------------
 
-This program is compiled/build using Eclipse.  An ANT build file (build.xml) is included
-to create an executable jar file.
+The Ant build.xml file contains the required tasks to compile and create the jar file.
+By default a complete compile and build is done by running Ant in the root directory:
+
+$ ant
+
+The ./dist directory will contain a zip file with the latest release.
+
+
+How to use
+----------
+
+Run the jar using the java runtime environment:
+
+$ java -jar minikakofonix.jar
+
+simply provide the required parameters:
+
+$ java -jar minikakofonix.jar -h
+
+will show all the available options
+
+$ java -jar minikakofonix.jar -i eth0 -w rec -b 60 -m 239.6.6.10 -p 60010
+
+will subscribe to UDP multicast address 239.6.6.10 via interface eth0 and UDP port 60010
+and will record all the received asterix data into a file prefixed with "rec"
+a new recording will be started at the next block of 60 minutes (on the hour) and the
+previous hour will be saved in a timestamped file like: rec_20130605_2032_2100.ast
 
 
 
