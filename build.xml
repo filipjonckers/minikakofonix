@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project default="default" name="MiniKakofonix">
 	<property name="app.name"    value="minikakofonix"/>
-	<property name="app.version" value="v103"/>
+	<property name="app.version" value="v104"/>
 	<property name="dist.dir"    value="dist"/>
 	<property name="src.dir"     value="src"/>
 	<property name="build.dir"   value="build"/>
@@ -17,7 +17,7 @@
 	<target name="compile">
 		<mkdir dir="${classes.dir}"/>
 		<!-- build for Java 1.6 - asterix recording servers -->
-		<javac source="1.6" target="1.6" srcdir="${src.dir}" destdir="${classes.dir}"/>
+		<javac source="1.7" target="1.7" srcdir="${src.dir}" destdir="${classes.dir}"/>
 	</target>
 
 	<target name="jar">
