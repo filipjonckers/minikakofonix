@@ -1,6 +1,6 @@
 MiniKakofonix
 
-(c) Copyright 2013 Filip Jonckers.
+(c) Copyright 2013-2017 Filip Jonckers.
 This program is distributed under the terms of the GNU General Public License.
 
 This program is capable of subscribing to an UDP multicast feed containing (live) radar data
@@ -29,14 +29,14 @@ UDP feed recording Kakofonix is required which can listen to multiple UDP multic
 
 Project Maintainer:
 Filip Jonckers
-Radar Expert - Belgocontrol
+ATM Expert - DGO/ACC-APP/DSS Belgocontrol
 Twitter: @FilipJonckers
 Linkedin: http://be.linkedin.com/in/filipjonckers
 
 
 Tags
 ----
-Asterix, Eurocontrol, radar, modeS, SASS-C, multicast, multilateration, surveillance, A-SMGCS, ADS-B
+Asterix, Eurocontrol, radar, modeS, SASS-C, multicast, multilateration, surveillance, A-SMGCS, ADS-B, ACAS, TCAS
 
 
 Build instructions
